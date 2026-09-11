@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon Night CSS — скачать</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0712;--card:#151020;--text:#eee7ff;--muted:#b8a9cf;--accent:#a855f7;--border:#4c1d95}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#24113c,var(--bg) 55%);color:var(--text);font:16px system-ui,sans-serif;display:grid;place-items:center;padding:24px}.card{width:min(680px,100%);background:#151020eF;border:1px solid var(--border);border-radius:20px;padding:30px;box-shadow:0 0 45px #7e22ce33}h1{margin-top:0}p{color:var(--muted);line-height:1.6}.buttons{display:grid;gap:12px;margin:24px 0}.btn{border:1px solid var(--border);background:#1d162b;color:var(--text);padding:14px 18px;border-radius:12px;text-decoration:none;cursor:pointer;font:inherit;text-align:center}.btn:hover{border-color:var(--accent);box-shadow:0 0 18px #a855f733}.primary{background:#7e22ce;color:white;border-color:#a855f7}.small{font-size:13px;color:var(--muted)}code{background:#0b0712;padding:3px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+<main class="card">
+<h1>🌙 Neon Night CSS</h1>
+<p>Скачай готовые файлы расширения Chrome. Все файлы находятся в одной папке проекта.</p>
+<div class="buttons">
+<button class="btn primary" id="zip">⬇️ Скачать всё одним ZIP</button>
+<button class="btn" data-file="manifest.json">Скачать manifest.json</button>
+<button class="btn" data-file="style.css">Скачать style.css</button>
+<button class="btn" data-file="README.md">Скачать README.md</button>
+</div>
+<p class="small">После распаковки ZIP открой <code>chrome://extensions</code> → включи «Режим разработчика» → «Загрузить распакованное».</p>
+</main>
+<script>
+const files={
+'manifest.json':`{
+  "manifest_version": 3,
+  "name": "Neon Night CSS",
+  "version": "1.1.0",
+  "description": "A lightweight neon-dark CSS theme for websites.",
+  "content_scripts": [{"matches":["<all_urls>"],"css":["style.css"],"run_at":"document_start"}]
+}`,
+'style.css':`/* Neon Night CSS 1.1 — safer browser-wide dark theme */
+:root{--nn-bg:#0b0712;--nn-surface:#151020;--nn-surface-2:#1d162b;--nn-text:#eee7ff;--nn-muted:#b8a9cf;--nn-accent:#a855f7;--nn-border:#4c1d95}
+html{background:var(--nn-bg)!important}body{background-color:var(--nn-bg)!important;color:var(--nn-text)!important}
+main,section,article,header,footer,nav,aside{border-color:var(--nn-border)!important}
+input,textarea,select,button{background-color:var(--nn-surface)!important;color:var(--nn-text)!important;border-color:var(--nn-border)!important}
+input::placeholder,textarea::placeholder{color:var(--nn-muted)!important}a{color:#c084fc!important}a:hover,button:hover{color:#e9d5ff!important;border-color:var(--nn-accent)!important}
+button,input,textarea,select{border-radius:6px!important}img,video{border-radius:8px}::selection{background:var(--nn-accent)!important;color:#fff!important}`,
+'README.md':`# Neon Night CSS 🌙\n\nA small Chrome extension that applies a neon-dark visual style to websites.\n\n## Install locally\n1. Open Chrome.\n2. Go to chrome://extensions.\n3. Turn on Developer mode.\n4. Click Load unpacked.\n5. Select this project folder.\n6. Open a website and refresh the page.\n\nMIT License\n`
+};
+function download(name,data){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain;charset=utf-8'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+document.querySelectorAll('[data-file]').forEach(b=>b.onclick=()=>download(b.dataset.file,files[b.dataset.file]));
+function crc32(bytes){let c=~0;for(const b of bytes){c^=b;for(let k=0;k<8;k++)c=(c>>>1)^(0xEDB88320&-(c&1))}return(~c)>>>0}
+function u16(n){return[new Uint8Array([n&255,(n>>>8)&255])]}function u32(n){return new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255])}
+function zipStore(items){const enc=new TextEncoder(),parts=[],central=[];let offset=0;for(const [name,text] of Object.entries(items)){const nb=enc.encode(name),data=enc.encode(text),head=new Uint8Array(30+nb.length);head.set([80,75,3,4,20,0,0,0,0,0,0,0,0,0],0);head.set(u32(crc32(data)),14);head.set(u32(data.length),18);head.set(u32(data.length),22);head.set(u16(nb.length)[0],26);head.set(u16(0)[0],28);head.set(nb,30);parts.push(head,data);const ch=new Uint8Array(46+nb.length);ch.set([80,75,1,2,20,0,20,0,0,0,0,0,0,0],0);ch.set(u32(crc32(data)),16);ch.set(u32(data.length),20);ch.set(u32(data.length),24);ch.set(u16(nb.length)[0],28);ch.set(u16(0)[0],30);ch.set(u16(0)[0],32);ch.set(u16(0)[0],34);ch.set(u32(0),38);ch.set(u32(offset),42);ch.set(nb,46);central.push(ch);offset+=head.length+data.length}const cdSize=central.reduce((n,x)=>n+x.length,0),end=new Uint8Array(22);end.set([80,75,5,6,0,0,0,0],0);end.set(u16(central.length)[0],8);end.set(u16(central.length)[0],10);end.set(u32(cdSize),12);end.set(u32(offset),16);return new Blob([...parts,...central,end],{type:'application/zip'})}
+document.getElementById('zip').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(zipStore(files));a.download='neon-night-css.zip';a.click()};
+</script>
+</body>
+</html>
