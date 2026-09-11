@@ -1,0 +1,55 @@
+/* Neon Night CSS — a lightweight browser-wide visual theme */
+:root {
+  --nn-bg: #0b0712;
+  --nn-surface: #151020;
+  --nn-text: #eee7ff;
+  --nn-accent: #a855f7;
+  --nn-border: #4c1d95;
+}
+
+html {
+  background: var(--nn-bg) !important;
+}
+
+body {
+  background: var(--nn-bg) !important;
+  color: var(--nn-text) !important;
+}
+
+body,
+main,
+section,
+article,
+header,
+footer,
+nav,
+aside,
+div {
+  border-color: var(--nn-border) !important;
+}
+
+input,
+textarea,
+select,
+button {
+  background: var(--nn-surface) !important;
+  color: var(--nn-text) !important;
+  border-color: var(--nn-border) !important;
+}
+
+a {
+  color: #c084fc !important;
+}
+
+a:hover,
+button:hover {
+  color: #e9d5ff !important;
+  border-color: var(--nn-accent) !important;
+}
+
+img,
+video {
+  border-radius: 8px;
+}
+
+/* Avoid changing browser UI or extension pages. */
