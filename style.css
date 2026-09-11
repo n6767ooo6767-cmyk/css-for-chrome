@@ -1,8 +1,10 @@
-/* Neon Night CSS — a lightweight browser-wide visual theme */
+/* Neon Night CSS 1.1 — safer browser-wide dark theme */
 :root {
   --nn-bg: #0b0712;
   --nn-surface: #151020;
+  --nn-surface-2: #1d162b;
   --nn-text: #eee7ff;
+  --nn-muted: #b8a9cf;
   --nn-accent: #a855f7;
   --nn-border: #4c1d95;
 }
@@ -12,19 +14,18 @@ html {
 }
 
 body {
-  background: var(--nn-bg) !important;
+  background-color: var(--nn-bg) !important;
   color: var(--nn-text) !important;
 }
 
-body,
+/* Common page containers only; avoid styling every div. */
 main,
 section,
 article,
 header,
 footer,
 nav,
-aside,
-div {
+aside {
   border-color: var(--nn-border) !important;
 }
 
@@ -32,9 +33,14 @@ input,
 textarea,
 select,
 button {
-  background: var(--nn-surface) !important;
+  background-color: var(--nn-surface) !important;
   color: var(--nn-text) !important;
   border-color: var(--nn-border) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--nn-muted) !important;
 }
 
 a {
@@ -47,9 +53,20 @@ button:hover {
   border-color: var(--nn-accent) !important;
 }
 
+button,
+input,
+textarea,
+select {
+  border-radius: 6px !important;
+}
+
 img,
 video {
   border-radius: 8px;
 }
 
-/* Avoid changing browser UI or extension pages. */
+/* Selection */
+::selection {
+  background: var(--nn-accent) !important;
+  color: #ffffff !important;
+}
